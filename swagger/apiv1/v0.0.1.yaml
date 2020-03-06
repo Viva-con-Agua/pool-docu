@@ -1,0 +1,435 @@
+swagger: "2.0"
+info:
+  description: "This is ower new Pool² Api."
+  version: "1.0.0"
+  title: "API V1"
+  termsOfService: ""
+  contact:
+    email: "d.kleber@vivaconagua.org"
+    
+host: "stage.vivaconagua.org"
+basePath: "/api/v1"
+tags:
+- name: "auth"
+  description: "All about Session"
+  externalDocs:
+    description: "Find out more about the backend service"
+    url: "https://github.com/Viva-con-Agua/auth-backend"
+- name: "users"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more about the backend service"
+    url: "https://github.com/Viva-con-Agua/auth-backend"
+- name: "roles"
+  description: "Operations about roles"
+  externalDocs:
+    description: "Find out more about the backend service"
+    url: "https://github.com/Viva-con-Agua/auth-backend"
+- name: "crews"
+  description: "Operations about crews"
+  externalDocs:
+    description: "Find out more about the backend service"
+    url: "https://github.com/Viva-con-Agua/drops-backend"
+- name: "supporter"
+  description: "Operations about supporter"
+  externalDocs:
+    description: "Find out more about the backend service"
+    url: "https://github.com/Viva-con-Agua/drops-backend"
+schemes:
+- "https"
+- "http"
+
+paths:
+  /auth/signup:
+    post:
+      tags:
+        - "auth"
+      summary: sign up User
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "signup credentials"
+          required: true
+          schema:
+            $ref: "#/definitions/Credentials"
+      responses:
+        201:
+          description: "successful created"
+  
+  /auth/signin:
+    post:
+      tags:
+        - "auth"
+      summary: sign in User
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "signup credentials"
+          required: true
+          schema:
+            $ref: "#/definitions/Credentials"
+      responses:
+        200:
+          description: "successful sign in"
+  
+  /auth/signout:
+    get:
+      tags:
+        - "auth"
+      summary: sign out User
+      responses:
+        200:
+          description: "successfil sign out"
+
+  /users/{uuid}:
+    get:
+      tags:
+        - "users"
+      summary: Adds a new user
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "UUID of User to return"
+        required: true
+        type: "string"
+        format: "string64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+    
+  /users:
+    get:
+      tags:
+        - "users"
+      summary: get User list
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Users"
+  
+    put:
+      tags:
+        - "users"
+      summary: update User
+      parameters: 
+        - in: "body"
+          name: "body"
+          description: "User model"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "successful updated"
+    
+    delete:
+      tags:
+        - "users"
+      summary: delete User
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "delete body"
+          required: true
+          schema:
+            $ref: "#/definitions/DeleteBody"
+      responses:
+        200:
+          description: "successful deleted"
+          
+  /roles:
+    post:
+      tags:
+        - "roles"
+      summary: insert role
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Role model"
+          schema:
+            $ref: "#/definitions/RoleStub"
+      responses:
+        201:
+          description: "successful created"
+          
+    get:
+      tags:
+        - "roles"
+      summary: get Role list
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Roles"
+  
+  /supporter/{uuid}:
+    get:
+      tags:
+        - "supporter"
+      summary: get supporter by uuid
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "UUID of supporter to return"
+        required: true
+        type: "string"
+        format: "string64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Supporter"
+    
+  /supporter:
+    get:
+      tags:
+        - "supporter"
+      summary: get User list
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Supporters"
+  
+    put:
+      tags:
+        - "supporter"
+      summary: update User
+      parameters: 
+        - in: "body"
+          name: "body"
+          description: "User model"
+          required: true
+          schema:
+            $ref: "#/definitions/Supporter"
+      responses:
+        200:
+          description: "successful updated"
+    
+    delete:
+      tags:
+        - "supporter"
+      summary: delete User
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "delete body"
+          required: true
+          schema:
+            $ref: "#/definitions/DeleteBody"
+      responses:
+        200:
+          description: "successful deleted"
+          
+  /crew/{uuid}:
+    get:
+      tags:
+        - "crews"
+      summary: get crew by uuid
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "UUID of creww to return"
+        required: true
+        type: "string"
+        format: "string64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Crew"
+    
+  /crew:
+    get:
+      tags:
+        - "crews"
+      summary: get Crew list
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Crews"
+  
+    put:
+      tags:
+        - "crews"
+      summary: update Crew
+      parameters: 
+        - in: "body"
+          name: "body"
+          description: "Crew model"
+          required: true
+          schema:
+            $ref: "#/definitions/Crew"
+      responses:
+        200:
+          description: "successful updated"
+    
+    delete:
+      tags:
+        - "crews"
+      summary: delete Crew
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "delete body"
+          required: true
+          schema:
+            $ref: "#/definitions/DeleteBody"
+      responses:
+        200:
+          description: "successful deleted"
+            
+    
+              
+
+definitions:
+  
+
+
+  DeleteBody:
+    type: "object"
+    properties:
+      uuid: 
+        type: "string"
+      
+  Credentials:
+    type: "object"
+    properties:
+      email: 
+        type: "string"
+      password:
+        type: "string"
+        
+  RoleStub:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+    
+  Role:
+    type: "object"
+    properties:
+      uuid: 
+        type: "string"
+      name:
+        type: "string"
+    
+  User:
+    type: "object"
+    properties:
+      uuid: 
+        type: "string"
+      roles:
+        type: array
+        items:
+          $ref: "#/definitions/Role"
+          
+  Users: 
+    type: array
+    items:
+      $ref: "#/definitions/User"
+
+  Roles: 
+    type: array
+    items:
+      $ref: "#/definitions/Role"
+      
+  SupporterCreate:
+    type: "object"
+    properties:
+      credentials:
+        type: "object"
+        items:
+          $ref: "#/definitions/Credentials"
+      first_name:
+        type: string
+      last_name:
+        type: string
+  
+  Supporter:
+    type: "object"
+    properties:
+      uuid: 
+        type: "string"
+      email:
+        type: string
+      first_name:
+        type: "string"
+      last_name:
+        type: "string"
+      roles:
+        type: "array"
+        items:
+          $ref: "#/definitions/Role"
+      updated:
+        type: integer
+      created:
+        type: integer
+  
+  Supporters:
+    type: array
+    items:
+      $ref: '#/definitions/Supporter'
+  
+  CityCreate:
+    type: object
+    properties:
+      name: 
+        type: string
+      pillar:
+        type: string
+
+  City:
+    type: object
+    properties:
+      uuid: 
+        type: string
+      name: 
+        type: string
+      pillar:
+        type: string
+  
+  Cities:
+    type: array
+    items:
+      $ref: '#/definitions/City'
+      
+  CrewCreate:
+    type: object
+    properties:
+      name: 
+        type: string
+      cities:
+        type: array
+        items:
+          $ref: "#/definitions/City"
+  
+  Crew:
+    type: object
+    properties:
+      uuid: 
+        type: string
+      name: 
+        type: string
+      cities:
+        type: array
+        items:
+          $ref: "#/definitions/City"
+      updated:
+        type: integer
+      created:
+        type: integer   
+        
+  Crews:
+    type: array
+    items:
+      $ref: '#/definitions/Supporter'
+
+        
+        
+        
+  
