@@ -1,7 +1,20 @@
-# Database Controller
+# Database Controller Go
+
+This guide is a collection of different examples for creating a database controller with Go for the pool².
 
 
-## Datatypes
+## Select Query
+
+### Simple Select
+
+## Datatypes using in Pool²
+
+In some cases it makes sense to initialize variables in the backend.
+For example, the create date should not be initialize in the frontend where it could be manipulated.
+A good solution is to handle these variables in the database controllers.
+The Pool² uses not primitive data types such as UUID for system-wide identifiers in various cases. 
+For this you will find a summary in this section of how you can create these data types.
+
 ### UUID
 ```
   Uuid, err := uuid.NewRandom()
@@ -15,22 +28,43 @@
  time.Now().Unix()
 ```
 ## Insert Models
+This section contains a summary of various cases that can be encountered when writing an insert controller.
+
 ### simple Model
 
-Insert simple Models into Database
+Insert simple Models into Database.
+
+With insert, it makes sense to generate a query via `DB.begin()`. 
+In case of an error, return it and output the error via `log.Print()`. 
+```
+	tx, err := utils.DB.Begin()
+	if err != nil {
+		log.Print("Database Error: ", err)
+		return err
+```
+The next step is to define the query. That happens in plain SQL. The ? can then be filled with variables.
+```
+	query := "INSERT INTO Model (value_1, value_2, ...) VALUES(?, ?, ...)" 
+```
+This query can now be executed via `tx.Exec()`. 
+If the database throws an error, a `tx.Rollback()` should be carried out.
+At the end we return the commit. If an error has occurred, the return value is (nil, err) where err! = nil
+```
+	if err != nil {
+		tx.Rollback()
+		log.Print("Database Error: ", err)
+		return err
+	}
+	return tx.Commit()
 
 ```
+
+```
+#### Full Controller
 /**
  * insert Model into database
  */
 func InsertModel(r *models.ModelCreate) (err error) {
-	
-	// Create uuid
-	if err != nil {
-		log.Print("Database Error: ", err)
-		return err
-	}
-
 	// begin database query and handle error
 	tx, err := utils.DB.Begin()
 	if err != nil {
@@ -49,8 +83,28 @@ func InsertModel(r *models.ModelCreate) (err error) {
 	}
 	return tx.Commit()
 }
+
+
 ```
 ### Model with foreign key
+The model is saved in two tables with a foreign key. The controller first creates the main model and then gets the ID via `res.LastInsertId`. So we can simple insert the child Model and commit the request.
+```
+	//insert Model
+	res, err := tx.Exec("INSERT INTO Model (uuid, updated, created) VALUES(?, ?, ?)", Uuid.String(), time.Now().Unix(), time.Now().Unix())
+	if err != nil {
+		tx.Rollback()
+		log.Print("Database Error: ", err)
+		return err
+	}
+	// get user id via LastInsertId
+	id, err := res.LastInsertId()
+	if err != nil {
+		log.Print("Database Error: ", err)
+		return err
+	}
+
+```
+#### Full Controller
 
 ```
 func InsertWithKey(c *Model) (err error) {
@@ -97,7 +151,8 @@ func InsertWithKey(c *Model) (err error) {
 
 
 ### Models with two foreign key
-
+The controller creates a model with two foreign keys. For this we get the ids of the parents with two requests.
+Then the model can be created with the keys. For more information about select query, look at (insert link)
 ```
 func InsertModelWithTwoKeys(assign *models.AccessUserCreate) (err error) {
 	
@@ -117,7 +172,7 @@ func InsertModelWithTwoKeys(assign *models.AccessUserCreate) (err error) {
 		}
 	}
 	// select model_2 from database
-	rows2, err := utils.DB.Query("SELECT id FROM Model_2 WHERE uuid = ?", assign.RoleUuid)
+	rows2, err := utils.DB.Query("SELECT id FROM Model_2 WHERE uuid = ?", assign.To)
 	if err != nil {
 		log.Print("Database Error", err)
 		return err
