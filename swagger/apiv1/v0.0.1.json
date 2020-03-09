@@ -129,7 +129,7 @@
           {
             "name": "uuid",
             "in": "path",
-            "description": "UUID of User to return",
+            "description": "UUID of supporter to return",
             "required": true,
             "type": "string",
             "format": "string64"
@@ -205,12 +205,98 @@
         }
       }
     },
+    "/users/access": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "assign User to Role",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Accesss informations",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AccessUserCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful sign in"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "unassign User Role relation",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "delete body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteBody"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful deleted"
+          }
+        }
+      }
+    },
+    "/roles/{uuid}": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "get Role by uuid",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of Role to return",
+            "required": true,
+            "type": "string",
+            "format": "string64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Role"
+            }
+          }
+        }
+      }
+    },
     "/roles": {
+      "get": {
+        "tags": [
+          "roles"
+        ],
+        "summary": "get Role list",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Roles"
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "roles"
         ],
-        "summary": "insert role",
+        "summary": "insert Role",
         "parameters": [
           {
             "in": "body",
@@ -227,17 +313,25 @@
           }
         }
       },
-      "get": {
+      "delete": {
         "tags": [
           "roles"
         ],
-        "summary": "get Role list",
+        "summary": "delete Role",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "delete body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteBody"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Roles"
-            }
+            "description": "successful deleted"
           }
         }
       }
@@ -604,6 +698,46 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/Supporter"
+      }
+    },
+    "AccessUserCreate": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "role_uuid": {
+          "type": "string"
+        },
+        "model_uuid": {
+          "type": "string"
+        },
+        "model_name": {
+          "type": "string"
+        }
+      }
+    },
+    "AccessUser": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "role_uuid": {
+          "type": "string"
+        },
+        "role_name": {
+          "type": "string"
+        },
+        "model_uuid": {
+          "type": "string"
+        },
+        "model_name": {
+          "type": "string"
+        },
+        "created": {
+          "type": "integer"
+        }
       }
     }
   }

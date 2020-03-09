@@ -89,7 +89,7 @@ paths:
       parameters:
       - name: "uuid"
         in: "path"
-        description: "UUID of User to return"
+        description: "UUID of supporter to return"
         required: true
         type: "string"
         format: "string64"
@@ -140,21 +140,56 @@ paths:
         200:
           description: "successful deleted"
           
-  /roles:
+  /users/access:
     post:
       tags:
-        - "roles"
-      summary: insert role
+        - "users"
+      summary: assign User to Role
       parameters:
         - in: "body"
           name: "body"
-          description: "Role model"
+          description: "Accesss informations"
+          required: true
           schema:
-            $ref: "#/definitions/RoleStub"
+            $ref: "#/definitions/AccessUserCreate"
       responses:
-        201:
-          description: "successful created"
+        200:
+          description: "successful sign in"
+        
+    delete:
+      tags:
+        - "users"
+      summary: unassign User Role relation
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "delete body"
+          required: true
+          schema:
+            $ref: "#/definitions/DeleteBody"
+      responses:
+        200:
+          description: "successful deleted"
           
+  /roles/{uuid}:
+    get:
+      tags:
+        - "roles"
+      summary: get Role by uuid
+      parameters:
+      - name: "uuid"
+        in: "path"
+        description: "UUID of Role to return"
+        required: true
+        type: "string"
+        format: "string64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Role"
+   
+  /roles:
     get:
       tags:
         - "roles"
@@ -164,6 +199,34 @@ paths:
           description: "successful operation"
           schema:
             $ref: "#/definitions/Roles"
+    post:
+      tags:
+        - "roles"
+      summary: insert Role
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Role model"
+          schema:
+            $ref: "#/definitions/RoleStub"
+      responses:
+        201:
+          description: "successful created"
+        
+    delete:
+      tags:
+        - "roles"
+      summary: delete Role
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "delete body"
+          required: true
+          schema:
+            $ref: "#/definitions/DeleteBody"
+      responses:
+        200:
+          description: "successful deleted"
   
   /supporter/{uuid}:
     get:
@@ -428,6 +491,34 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/Supporter'
+      
+  AccessUserCreate:
+    type: object
+    properties:
+      uuid: 
+        type: string
+      role_uuid: 
+        type: string
+      model_uuid:
+        type: string
+      model_name: 
+        type: string
+        
+  AccessUser:
+    type: object
+    properties:
+      uuid: 
+        type: string
+      role_uuid: 
+        type: string
+      role_name:
+        type: string
+      model_uuid:
+        type: string
+      model_name: 
+        type: string
+      created:
+        type: integer
 
         
         
