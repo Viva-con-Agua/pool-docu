@@ -246,7 +246,7 @@ func InsertModelWithTwoKeys(assign *models.AccessUserCreate) (err error) {
 ## Select Models from database
 
 This section will show you some cases for selecting models from database. 
-The select function are the most used in a webservice, so we should keep discuss this part of the guide.
+The select function are the most used in a webservice, so we should stay in discuss this part of the guide.
 
 ## Query
 
