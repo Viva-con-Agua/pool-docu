@@ -3,9 +3,6 @@
 This guide is a collection of different examples for creating a database controller with Go for the pool².
 We use the [Go-MySQL-Driver](https://github.com/go-sql-driver/mysql) and [MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/) deployed in [Docker](https://www.docker.com/). If you want to deploy your own docker use as default [mysql-docker](https://hub.docker.com/_/mysql).
 
-## Select Query
-
-### Simple Select
 
 ## Datatypes used in Pool²
 
