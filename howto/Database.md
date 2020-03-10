@@ -274,7 +274,7 @@ query := "SELECT m.uuid, m.name, m.service_name, m.created " +
 You can use `LIMIT ?, ?` for paging your database select. The first ? is the element you start selecting and the second ? is the count of how many.
 For example `LIMIT 0, 20` select the first 20 elements. 
 
-### Left Join 1 to n relation
+### Left Join one to many relation
 
 A big problem in 1 to n relation are handling duplicates in the selected table. 
 The naive solution is build a parser and handle with dublicates. 
@@ -375,5 +375,34 @@ func SelectModelById(uuid string) (model []Model, err error) {
 }
 ```
 
-### Select List
+## Update model
+
+Similar to Insert a model some values shouldn't set by frontend. 
+For example UUID and created will never updated. 
+The updated value is the actuall utc time and should set by backend.
+
+### Simple update
+The function below show a solution for update. As identifier we use the uuid of the current model.
+
+```
+func UpdateUser(user *models.User) (err error) {
+	// sgl begin
+	tx, err := utils.DB.Begin()
+	if err != nil {
+		log.Print("Database Error: ", err)
+		return err
+	}
+	//update user user
+	_, err = tx.Exec("UPDATE User SET updated = ? WHERE uuid = ?", time.Now().Unix(), user.Uuid)
+	if err != nil {
+		tx.Rollback()
+		log.Print("Database Error: ", err)
+		return err
+	}
+	return tx.Commit()
+
+}
+```
+
+
 
