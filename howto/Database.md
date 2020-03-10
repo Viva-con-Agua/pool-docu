@@ -280,13 +280,13 @@ For example `LIMIT 0, 20` select the first 20 elements.
 ### Left Join 1 to n relation
 
 A big problem in 1 to n relation are handling duplicates in the selected table. 
-The naive solution is build a parser and handle with doublicates. 
+The naive solution is build a parser and handle with dublicates. 
 The problem is that each select query needs a seperated parser. This parser need care about sorting and debugging is very unconfortable. 
 
 A second solution is using `DISTINCT` and search child models with a seperated database request. 
 It works fine with short lists or single elements, but it doesn't realy scale.
 
-The best way to handle with 1 to n table doublicates is to keep all informations in a table with no doublicates. 
+The best way to handle with 1 to n table dublicates is to keep all informations in a table with no dublicates. 
 Easy to parse and easy to convert. MySql provide some functions they help us out.
 
 ```
@@ -303,7 +303,7 @@ The above query is for selecting a user with a list of access. We can easy build
 In case we have more than one AccessUser `GROUP_CONCAT` will seperate all JSON_OBJECT with `,`. 
 The simple `CONCAT('[', List , ']')` build a Json_Array.
 
-The result can easy be convert to Json. First define dummy for for row bytes. The `rows.Next()` return the next spalte of the table. We havn't doublicates, so we scan user by user.
+The result can easy be convert to Json. First define dummy for for row bytes. The `rows.Next()` return the next lines of the table. We havn't duplicates, so we scan user by user.
 The user can direct assign to an models.User. For handling the Json List we store it as []byte and use `json.Unmarshal` to assign the list to access. Go handle it very smart.
 
 Last check if the AccessUserList has an element. The query return allways a json and we assign it to a model. If a User hasn't a AccessUser, the database return the object with empty values, so the first element of the list hasn't an uuid. 
