@@ -245,22 +245,23 @@ func InsertModelWithTwoKeys(assign *models.AccessUserCreate) (err error) {
 
 ## Select Models from database
 
-This section will show you some cases for selecting models from database. 
-The select function are the most used in a webservice, so we should stay in discuss this part of the guide.
+In this section we will go into select. 
+Select functions are the most used functions in a web service. Therefore this part of the documentation should be discussed further.
 
 ## Query
 
 ### Limit the query for selecting only one element 
-We will look at the select query for get one model via UUID. The UUID is unique and you can easy filter by using `WHERE m.uuid = ?`.
+
+First, we go into a query that simply returns a model. The UUID can be easily filtered by using `WHERE m.uuid = ?`.
 ```
 query := "SELECT m.uuid, m.name, m.service_name, m.created " + 
 					 "FROM Model AS m " +
 					 "WHERE r.uuid = ? " 
 ```
-All uuids are unique in ower database and the upper query will select you only one element. 
-But the database will not stop searching after select the element with giving uuid,
-because of the unique flag is only for insert. So if you want select only one Element add `Limit 1`. 
-The query will stop iterating and returning the model.
+Furthermore, the UUID is also unique, so the query above returns only one mod. 
+However, the database will not stop searching, but goes through all elements in the table.
+So if you want select only one Element add `Limit 1`. 
+The query will stop iterate and return the model.
 
 ```
 query := "SELECT m.uuid, m.name, m.service_name, m.created " + 
@@ -269,21 +270,21 @@ query := "SELECT m.uuid, m.name, m.service_name, m.created " +
            "LIMIT 1 "
 
 ```
-### Limit query for selecting list of element
+### Limit and Page
 
 You can use `LIMIT ?, ?` for paging your database select. The first ? is the element you start selecting and the second ? is the count of how many.
 For example `LIMIT 0, 20` select the first 20 elements. 
 
 ### Left Join one to many relation
 
-A big problem in 1 to n relation are handling duplicates in the selected table. 
+A big problem in on to many relation are handling duplicates in the selected table. 
 The naive solution is build a parser and handle with dublicates. 
-The problem is that each select query needs a seperated parser. This parser need care about sorting and debugging is very unconfortable. 
+The problem is that each select query needs a seperated parser. This parser need care about sorting and debugging is very uncomfortable. 
 
 A second solution is using `DISTINCT` and search child models with a seperated database request. 
-It works fine with short lists or single elements, but it doesn't realy scale.
+It works fine with short lists or single elements, but it doesn't scale.
 
-The best way to handle with 1 to n table dublicates is to keep all informations in a table with no dublicates. 
+The best way to handle with on to n table dublicates is to keep all informations in a table with no dublicates.^^
 Easy to parse and easy to convert. MySql provide some functions they help us out.
 
 ```
@@ -298,12 +299,52 @@ UserQuery = "SELECT u.id, u.uuid, c.email, u.updated, u.created, CONCAT('[', " +
 ```
 The above query is for selecting a user with a list of access. We can easy build AccessUser via `JSON_OBJECT`.
 In case we have more than one AccessUser `GROUP_CONCAT` will seperate all JSON_OBJECT with `,`. 
-The simple `CONCAT('[', List , ']')` build a Json_Array.
+Than simple `CONCAT('[', List , ']')` and you build an Json_Array.
 
-The result can easy be convert to Json. First define dummy for for row bytes. The `rows.Next()` return the next lines of the table. We havn't duplicates, so we scan user by user.
-The user can direct assign to an models.User. For handling the Json List we store it as []byte and use `json.Unmarshal` to assign the list to access. Go handle it very smart.
+The result can be easily converted to Json. 
+First define dummy for for row bytes. 
+```
+	//initial dummy varibles
+	var accessByte []byte
+	var id int
+	
+```
 
-Last check if the AccessUserList has an element. The query return allways a json and we assign it to a model. If a User hasn't a AccessUser, the database return the object with empty values, so the first element of the list hasn't an uuid. 
+The `rows.Next()` return the next lines of the table. We have no duplicates, so we scan user by user.
+The user can direct assign to an models.User. 
+
+```
+		// create User 
+		user := new(models.User)
+		//scan row and fill user
+		err = rows.Scan(&id, &user.Uuid, &user.Email, &user.Updated, &user.Created, &accessByte)
+    // default error handling
+		if err != nil {
+			log.Print("Database Error: ", err)
+			return nil, err
+		}
+
+```
+For handling the Json List we store it as []byte and use `json.Unmarshal` to assign the list to access. Go handle it very smart.
+```
+    access := new([]models.AccessUser)
+		// create json from []byte
+		err = json.Unmarshal(accessByte, &access)
+
+```
+
+Last check if the AccessUserList has an element. The query return allways a json and we assign it to a model. If a User hasn't a AccessUser, the database return the object with empty values, so the first element of the list have no uuid. 
+
+```
+		if ((*access)[0].Uuid != "") {
+			user.Access = *access
+		}else{
+			user.Access = nil
+		}
+
+```
+
+#### Full Controller
 
 ```
 	//initial dummy varibles
