@@ -6,7 +6,7 @@
   "crm_data": {
     "campaign_id": 17,
     "drops_id": "540e695b-341e-4256-8a3b-9aa874332f60",
-    "activity": "SIGNUP"
+    "activity": ""
   }
 ```
 
@@ -14,6 +14,21 @@
 ## Run4Water workflow
 
 ![Workflow](Workflow_Run4Water.jpg)
+
+
+### Activities
+| Aktivity  | Data Model |
+| ------------- | ------------- |
+| CREATE_DROPS_USER    | INSERT USER  |
+| EVENT_JOIN    | SIMPLE ACTIVITY  |
+| PAYMENT_COMMIT   | PAYMENT DATA  |
+| EVENT_FINISH    | SIMPLE ACTIVITY  |
+| RUN_GOAL    | MOVE DATA  |
+| RUN_FINISH    | MOVE DATA  |
+| TEAM_CREATE    | GROUP DATA  |
+| TEAM_JOIN    | GROUP DATA  |
+| INVIDE_FRIEND    | SIMPLE MAIL  |
+
 
 ### SIMPLE ACTIVITY
 
@@ -31,7 +46,8 @@
   "crm_data": {
     "campaign_id": 17,
     "drops_id": "540e695b-341e-4256-8a3b-9aa874332f60",
-    "activity": "SIGNUP"
+    "activity": "CREATE_DROPS_USER",
+    "created": "01231231"
   },
   "crm_user": {
     "email": "dennis_kleber22@mailbox.org",
@@ -55,7 +71,8 @@
   "crm_data": {
     "campaign_id": 17,
     "drops_id": "540e695b-341e-4256-8a3b-9aa874332f60",
-    "activity": "PAYMENT_COMMIT"
+    "activity": "PAYMENT_COMMIT",
+    "created": "01231231"
   },
   "payment":{
     "id":"",
@@ -74,7 +91,8 @@
     "crm_data": {
         "campaign_id": 17,
         "drops_id": "540e695b-341e-4256-8a3b-9aa874332f60",
-        "activity": "SIGNUP"
+        "activity": "INVIDE_FRIEND",
+        "created": "01231231"
     },
     "mail": {
         "email": "freund@gmx.org" //dürfen wir nicht als Kontakt anlegen. Sorry für die schlechte vorarbeit im letzten Model ^^
@@ -90,7 +108,8 @@
   "crm_data": {
     "campaign_id": 17,
     "drops_id": "540e695b-341e-4256-8a3b-9aa874332f60",
-    "activity": "RUN_INIT / RUN_FINISH"
+    "activity": "RUN_INIT / RUN_FINISH",
+    "created": "01231231"
   },
   "move": {
     "range": 100
@@ -106,6 +125,7 @@
   "crm_data": {
     "campaign_id": 17,
     "drops_id": "540e695b-341e-4256-8a3b-9aa874332f60",
-    "activity": "GROUP_CREATE / GROUP_JOIN"
+    "activity": "GROUP_CREATE / GROUP_JOIN",
+    "created": "01231231"
   },
   "group_name": "teamname"
