@@ -15,6 +15,16 @@
 
 ![Workflow](Workflow_Run4Water.jpg)
 
+### SIMPLE ACTIVITY
+
+```
+  "crm_data": {
+    "campaign_id": 17,
+    "drops_id": "540e695b-341e-4256-8a3b-9aa874332f60",
+    "activity": "EVENT_JOIN"
+  }
+```
+
 ### INSERT USER crm model
 ```
 {
@@ -88,3 +98,14 @@
     "time": 0
   }
 ```
+
+### GROUP CREATE
+
+
+```
+  "crm_data": {
+    "campaign_id": 17,
+    "drops_id": "540e695b-341e-4256-8a3b-9aa874332f60",
+    "activity": "MOVE_DATA"
+  },
+  "group_name": "teamname"
