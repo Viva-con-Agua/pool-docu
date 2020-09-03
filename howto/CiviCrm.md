@@ -13,7 +13,7 @@
 
 ## Run4Water workflow
 
-[Workflow](Workflow_Run4Water.jpg)
+![Workflow](Workflow_Run4Water.jpg)
 
 ### INSERT USER crm model
 ```
