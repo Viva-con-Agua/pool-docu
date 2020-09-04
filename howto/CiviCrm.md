@@ -30,6 +30,19 @@
 | INVIDE_FRIEND    | SIMPLE MAIL  |
 
 
+Aktivity	Data Model	Beschreibung	Registrierung zu Laufevent	Ändern/Ergänzen Registrierungsdaten	Einladung für Lauf folgen	eigene Laufdaten zurückmelden	Übersichtsseite Laufergebnisse	Kontakt	Event-Teilnahme	Contribution	(Mail)
+DROPS_USER_CREATE	INSERT USER	Erzeuge eines Users für den Pool oder in Beziehung zu einer Kampagne mit Registrierungsmail	x	x	x			x			
+EVENT_JOIN	SIMPLE ACTIVITY	Zuordnung eines Users zu einem Event/Kampagne	x		x				x		
+PAYMENT_COMMIT	PAYMENT DATA	Zahlung für ein Event/Kampagne mit Event-Registrierungsmail	x		x					x	
+EVENT_FINISH	SIMPLE ACTIVITY	Was ist das und wann passiert da?				x			x		
+RUN_GOAL	MOVE DATA	Festlegung der geplanten Laufdaten	x	x	x				x		
+RUN_FINISH	MOVE DATA	Rückmeldung der gelaufenen Daten 				x			x		
+TEAM_CREATE	GROUP DATA	Team einem Drop-User zuordnen pro Event/Kampagne	(x)	(x)	x				x		
+TEAM_JOIN	GROUP DATA	Team einem Drop-User zuordnen pro Event/Kampagne							x		
+FRIEND_INVITE	SIMPLE MAIL	Freund zu einem Event mit Team per Mail einladen	(x)	(x)	(x)						x
+
+
+
 ### SIMPLE ACTIVITY
 
 ```
