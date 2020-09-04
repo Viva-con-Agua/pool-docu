@@ -29,7 +29,7 @@
 | TEAM_JOIN    | GROUP DATA  |
 | INVIDE_FRIEND    | SIMPLE MAIL  |
 
-
+### Activities UM
 Aktivity	Data Model	Beschreibung	Registrierung zu Laufevent	Ändern/Ergänzen Registrierungsdaten	Einladung für Lauf folgen	eigene Laufdaten zurückmelden	Übersichtsseite Laufergebnisse	Kontakt	Event-Teilnahme	Contribution	(Mail)
 DROPS_USER_CREATE	INSERT USER	Erzeuge eines Users für den Pool oder in Beziehung zu einer Kampagne mit Registrierungsmail	x	x	x			x			
 EVENT_JOIN	SIMPLE ACTIVITY	Zuordnung eines Users zu einem Event/Kampagne	x		x				x		
